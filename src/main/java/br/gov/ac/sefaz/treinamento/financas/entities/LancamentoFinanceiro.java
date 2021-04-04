@@ -18,6 +18,15 @@ public class LancamentoFinanceiro implements Serializable {
     private Boolean status;
     private BigDecimal valor;
 
+
+    public LancamentoFinanceiro(String descricao, TipoLancamento tipoLancamento, Date date, Boolean status, BigDecimal valor) {
+        this.descricao = descricao;
+        this.tipoLancamento = tipoLancamento;
+        this.date = date;
+        this.status = status;
+        this.valor = valor;
+    }
+
     public Long getId() {
         return id;
     }

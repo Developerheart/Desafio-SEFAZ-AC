@@ -15,7 +15,7 @@ public class ConnectionFactory {
 
 
 
-    private static Connection criaConnection() throws ClassNotFoundException, SQLException {
+    public static Connection criaConnection() throws ClassNotFoundException, SQLException {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(URL_DB, USER_DB, SENHA_USER_DB);
             System.out.println("Conexão feita com sucesso");
