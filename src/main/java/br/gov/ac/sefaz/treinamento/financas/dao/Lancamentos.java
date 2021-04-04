@@ -71,10 +71,43 @@ public class Lancamentos {
     }
 
 
+
+    public static LancamentoFinanceiro searchForId(Long id){
+        try {
+            LancamentoFinanceiro lan =  new LancamentoFinanceiro();
+            conn = ConnectionFactory.criaConnection();
+            String sql = "SELECT * FROM lancamentos WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+             ps.setLong(1, id);
+             ResultSet rs = ps.executeQuery();
+             if (rs.next()){
+
+                 lan.setId((long) rs.getInt("id"));
+                 lan.setDescricao(rs.getString("descricao"));
+                 lan.setTipoLancamento(TipoLancamento.values()[rs.getInt("tipo_lancamento")]);
+                 lan.setDate(rs.getDate("vencimento"));
+                 lan.setStatus(rs.getBoolean("status"));
+                 lan.setValor(rs.getBigDecimal("valor"));
+                 System.out.println(lan.toString());
+             }
+
+
+            return lan;
+
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+
+
     public static void main(String[] args) throws ParseException {
-        SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
-        LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
-        insertLancamento(lan);
-        listAll();
+        //SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
+        //LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
+        //insertLancamento(lan);
+        //listAll();
+        searchForId(2L);
+
     }
 }
