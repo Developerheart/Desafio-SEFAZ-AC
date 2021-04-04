@@ -5,14 +5,13 @@ import br.gov.ac.sefaz.treinamento.financas.entities.LancamentoFinanceiro;
 import br.gov.ac.sefaz.treinamento.financas.enums.TipoLancamento;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LancamentoInsert {
+public class Lancamentos {
 
     private static Connection conn;
 
@@ -41,12 +40,41 @@ public class LancamentoInsert {
 
     }
 
+    public static List<LancamentoFinanceiro> listAll() {
+
+        List<LancamentoFinanceiro> lista = new ArrayList<>();
+        try {
+            conn = ConnectionFactory.criaConnection();
+            String sql = "SELECT * FROM lancamentos";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery(sql);
+            while (rs.next()) {
+                LancamentoFinanceiro lan = new LancamentoFinanceiro();
+                lan.setId((long) rs.getInt("id"));
+                lan.setDescricao(rs.getString("descricao"));
+                lan.setTipoLancamento(TipoLancamento.values()[rs.getInt("tipo_lancamento")]);
+                lan.setDate(rs.getDate("vencimento"));
+                lan.setStatus(rs.getBoolean("status"));
+                lan.setValor(rs.getBigDecimal("valor"));
+                lista.add(lan);
+                System.out.println(lan.toString());
+            }
+            ps.close();
+            rs.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }finally {
+            ConnectionFactory.fechaConn(conn);
+        }
+        return lista;
+    }
+
+
     public static void main(String[] args) throws ParseException {
         SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
-        LancamentoFinanceiro lan = new LancamentoFinanceiro("ARROZ", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
-
+        LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
         insertLancamento(lan);
-
-
+        listAll();
     }
 }

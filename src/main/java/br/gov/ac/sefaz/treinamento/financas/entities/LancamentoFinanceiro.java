@@ -19,6 +19,10 @@ public class LancamentoFinanceiro implements Serializable {
     private BigDecimal valor;
 
 
+    public LancamentoFinanceiro(){
+
+    }
+
     public LancamentoFinanceiro(String descricao, TipoLancamento tipoLancamento, Date date, Boolean status, BigDecimal valor) {
         this.descricao = descricao;
         this.tipoLancamento = tipoLancamento;

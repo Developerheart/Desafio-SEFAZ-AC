@@ -1,7 +1,6 @@
 package br.gov.ac.sefaz.treinamento.financas.dao;
 
 
-import javax.print.DocFlavor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,6 +19,16 @@ public class ConnectionFactory {
             Connection conn = DriverManager.getConnection(URL_DB, USER_DB, SENHA_USER_DB);
             System.out.println("Conexão feita com sucesso");
             return conn;
+    }
+
+    public static void fechaConn(Connection connection){
+        try {
+            connection.close();
+            System.out.println("Conexão finalizada com sucesso");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 
     public static void main(String[] args) {
