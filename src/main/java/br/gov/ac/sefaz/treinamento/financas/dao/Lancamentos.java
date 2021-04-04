@@ -90,24 +90,63 @@ public class Lancamentos {
                  lan.setValor(rs.getBigDecimal("valor"));
                  System.out.println(lan.toString());
              }
-
-
+            ps.close();
+            rs.close();
             return lan;
 
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
+        } finally {
+            ConnectionFactory.fechaConn(conn);
+
         }
         return null;
+    }
+
+    public static boolean updateLancamento(LancamentoFinanceiro lancamentoFinanceiro){
+        try {
+
+            conn = ConnectionFactory.criaConnection();
+            String sql = "update lancamentos set descricao = ?, tipo_lancamento = ?, vencimento = ?, status = ?, valor = ? where id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, lancamentoFinanceiro.getDescricao());
+                ps.setString(2, String.valueOf(lancamentoFinanceiro.getTipoLancamento().ordinal()));
+                ps.setDate(3, new Date(lancamentoFinanceiro.getDate().getTime()));
+                ps.setBoolean(4, lancamentoFinanceiro.getStatus());
+                ps.setBigDecimal(5, lancamentoFinanceiro.getValor());
+                ps.setLong(6, lancamentoFinanceiro.getId());
+                ps.executeUpdate();
+                System.out.println("Update feito comsucesso");
+                ps.close();
+                ConnectionFactory.fechaConn(conn);
+
+
+
+
+                }   catch (SQLException e){
+                throw new SQLException(e.getMessage());
+            }
+
+            return true;
+        } catch (SQLException | ClassNotFoundException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
     }
 
 
 
     public static void main(String[] args) throws ParseException {
-        //SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
-        //LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
+        SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
+        LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
         //insertLancamento(lan);
+        lan.setId(1L);
+        //before
+        searchForId(1L);
+        updateLancamento(lan);
         //listAll();
-        searchForId(2L);
+        //after
+        searchForId(1L);
 
     }
 }

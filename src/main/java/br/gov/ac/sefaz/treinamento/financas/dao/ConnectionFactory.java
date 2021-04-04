@@ -25,6 +25,8 @@ public class ConnectionFactory {
         try {
             connection.close();
             System.out.println("Conexão finalizada com sucesso");
+            System.out.println("----------------------------------------------------I");
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
