@@ -15,22 +15,22 @@ public class Lancamentos {
 
     private static Connection conn;
 
-    public static void insertLancamento(LancamentoFinanceiro lancamentoFinanceiro){
+    public static void insertLancamento(LancamentoFinanceiro lancamentoFinanceiro) {
 
         try {
             conn = ConnectionFactory.criaConnection();
-            String sqlToInsert =  "INSERT INTO treinamento.lancamentos (descricao, tipo_lancamento, vencimento, status, valor) VALUES (?, ?, ?, ?, ?)";
+            String sqlToInsert = "INSERT INTO treinamento.lancamentos (descricao, tipo_lancamento, vencimento, status, valor) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sqlToInsert);
             ps.setString(1, lancamentoFinanceiro.getDescricao());
             ps.setString(2, String.valueOf(lancamentoFinanceiro.getTipoLancamento().ordinal()));
-            ps.setDate(3 , new java.sql.Date(lancamentoFinanceiro.getDate().getTime()));
+            ps.setDate(3, new java.sql.Date(lancamentoFinanceiro.getDate().getTime()));
             ps.setBoolean(4, lancamentoFinanceiro.getStatus());
             ps.setBigDecimal(5, lancamentoFinanceiro.getValor());
             ps.execute();
             System.out.println("Adicionado com sucesso");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 conn.close();
             } catch (SQLException throwables) {
@@ -64,32 +64,31 @@ public class Lancamentos {
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             ConnectionFactory.fechaConn(conn);
         }
         return lista;
     }
 
 
-
-    public static LancamentoFinanceiro searchForId(Long id){
+    public static LancamentoFinanceiro searchForId(Long id) {
         try {
-            LancamentoFinanceiro lan =  new LancamentoFinanceiro();
+            LancamentoFinanceiro lan = new LancamentoFinanceiro();
             conn = ConnectionFactory.criaConnection();
             String sql = "SELECT * FROM lancamentos WHERE id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
-             ps.setLong(1, id);
-             ResultSet rs = ps.executeQuery();
-             if (rs.next()){
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
 
-                 lan.setId((long) rs.getInt("id"));
-                 lan.setDescricao(rs.getString("descricao"));
-                 lan.setTipoLancamento(TipoLancamento.values()[rs.getInt("tipo_lancamento")]);
-                 lan.setDate(rs.getDate("vencimento"));
-                 lan.setStatus(rs.getBoolean("status"));
-                 lan.setValor(rs.getBigDecimal("valor"));
-                 System.out.println(lan.toString());
-             }
+                lan.setId((long) rs.getInt("id"));
+                lan.setDescricao(rs.getString("descricao"));
+                lan.setTipoLancamento(TipoLancamento.values()[rs.getInt("tipo_lancamento")]);
+                lan.setDate(rs.getDate("vencimento"));
+                lan.setStatus(rs.getBoolean("status"));
+                lan.setValor(rs.getBigDecimal("valor"));
+                System.out.println(lan.toString());
+            }
             ps.close();
             rs.close();
             return lan;
@@ -103,7 +102,7 @@ public class Lancamentos {
         return null;
     }
 
-    public static boolean updateLancamento(LancamentoFinanceiro lancamentoFinanceiro){
+    public static boolean updateLancamento(LancamentoFinanceiro lancamentoFinanceiro) {
         try {
 
             conn = ConnectionFactory.criaConnection();
@@ -121,9 +120,7 @@ public class Lancamentos {
                 ConnectionFactory.fechaConn(conn);
 
 
-
-
-                }   catch (SQLException e){
+            } catch (SQLException e) {
                 throw new SQLException(e.getMessage());
             }
 
@@ -134,19 +131,37 @@ public class Lancamentos {
         }
     }
 
-
+    public static boolean removeLan(LancamentoFinanceiro lancamentoFinanceiro) {
+        try {
+            conn = ConnectionFactory.criaConnection();
+            String sql = "DELETE FROM lancamentos WHERE id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setLong(1, lancamentoFinanceiro.getId());
+            ps.execute();
+            ps.close();
+            System.out.println("Removido com sucesso");
+            return true;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }finally {
+           ConnectionFactory.fechaConn(conn);
+        }
+    }
 
     public static void main(String[] args) throws ParseException {
         SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
-        LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
+        //LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
         //insertLancamento(lan);
-        lan.setId(1L);
+        LancamentoFinanceiro lan = new LancamentoFinanceiro();
+        //searchForId(2L);
+        lan.setId(2L);
         //before
-        searchForId(1L);
-        updateLancamento(lan);
-        //listAll();
+        //updateLancamento(lan);
+        listAll();
         //after
-        searchForId(1L);
+        removeLan(lan);
+        searchForId(2L);
 
     }
 }
