@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="pt_BR">
 <head>
@@ -56,16 +57,18 @@
                 </tr>
                 </thead>
                 <tbody>
+                <c:forEach var="lanc" items="${lancamentos}">
                 <tr>
-                    <td class="text-start">Conta de luz</td>
-                    <td class="text-start">10/04/20021</td>
-                    <td class="text-start">EFETIVADO</td>
-                    <td class="text-start">102,25</td>
+                    <td class="text-start"><c:out value="${lanc.descricao}"/></td>
+                    <td class="text-start"><c:out value="${lanc.tipoLancamento}"/></td>
+                    <td class="text-start"><c:out value="${lanc.status}"/></td>
+                    <td class="text-start"><c:out value="${lanc.valor}"/></td>
                     <td class="text-start">
                         <button type="button" class="btn btn-primary btn-sm">Editar</button>
                         <button type="button" class="btn btn-secondary btn-sm">Remover</button>
                     </td>
                 </tr>
+                </c:forEach>
                 <tbody>
                 <tr>
                     <td class="text-start" colspan="4">Totais</td>

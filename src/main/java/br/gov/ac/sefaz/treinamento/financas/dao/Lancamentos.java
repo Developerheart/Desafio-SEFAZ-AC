@@ -62,6 +62,8 @@ public class Lancamentos {
             ps.close();
             rs.close();
 
+            //lista.forEach(l -> System.out.println(l));
+            return lista;
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -150,18 +152,18 @@ public class Lancamentos {
     }
 
     public static void main(String[] args) throws ParseException {
-        SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
+        //SimpleDateFormat psc = new SimpleDateFormat("yyyy/MM/dd");
         //LancamentoFinanceiro lan = new LancamentoFinanceiro("Conta de Agua", TipoLancamento.DESPESA, psc.parse("2021/04/08"), false, new BigDecimal("1000.20"));
         //insertLancamento(lan);
-        LancamentoFinanceiro lan = new LancamentoFinanceiro();
+        //LancamentoFinanceiro lan = new LancamentoFinanceiro();
         //searchForId(2L);
-        lan.setId(2L);
+        //lan.setId(2L);
         //before
         //updateLancamento(lan);
         listAll();
         //after
-        removeLan(lan);
-        searchForId(2L);
+        //removeLan(lan);
+        //searchForId(2L);
 
     }
 }
