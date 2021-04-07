@@ -32,7 +32,7 @@
         </a>
 
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-            <a class="me-3 py-2 text-dark text-decoration-none" href="#">Listar</a>
+            <a class="me-3 py-2 text-dark text-decoration-none" href="<c:url value="http://localhost:8080/financas/Lancamento?acao=listAll"/>">Listar</a>
         </nav>
     </header>
 
@@ -44,7 +44,7 @@
     <main>
 
         <h2 class="display-6 text-center mb-4">Controle financeiro</h2>
-        <button class="btn btn-primary" type="submit">Novo lançamento</button>
+        <a class="btn btn-primary" href="http://localhost:8080/financas/update.jsp" role="button">Novo Lançamento</a>
         <div class="table-responsive">
             <table class="table text-center">
                 <thead>

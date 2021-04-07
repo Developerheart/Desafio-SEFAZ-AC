@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class ConnectionFactory {
 
     private static final String URL_DB = "jdbc:mysql://localhost:3306/treinamento";
-    private static final String USER_DB = "dev";
+    private static final String USER_DB = "root";
     private static final String SENHA_USER_DB = "";
 
 
